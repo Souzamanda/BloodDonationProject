@@ -78,6 +78,7 @@ namespace BloodDonationProject
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                // Adding a comment on here.
             });
         }
     }
