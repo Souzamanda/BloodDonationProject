@@ -24,6 +24,12 @@ namespace BloodDonationProject.Models
         [Required]
         public int HospitalId { get; set; }
     }
+
+    public class UpdateDonationDTO : CreateDonationDTO
+    {
+
+    }
+
     public class DonationDTO : CreateDonationDTO
     {
         public int Id { get; set; }
