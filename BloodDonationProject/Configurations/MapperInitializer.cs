@@ -18,6 +18,7 @@ namespace BloodDonationProject.Configurations
             CreateMap<Hospital, CreateHospitalDTO>().ReverseMap();
             CreateMap<Donation, DonationDTO>().ReverseMap();
             CreateMap<Donation, CreateDonationDTO>().ReverseMap();
+            CreateMap<ApiUser, AccountDTO>().ReverseMap();
         }
     }
 }

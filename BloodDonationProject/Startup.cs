@@ -2,6 +2,7 @@ using BloodDonationProject.Configurations;
 using BloodDonationProject.Data;
 using BloodDonationProject.IRepository;
 using BloodDonationProject.Repository;
+using BloodDonationProject.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -36,6 +37,10 @@ namespace BloodDonationProject
                 options.UseSqlServer(Configuration.GetConnectionString("sqlConnection"))
             );
 
+            services.AddAuthentication();
+            services.ConfigureIdentity();
+            services.ConfigureJWT(Configuration);
+
             services.AddCors(o =>
             {
                 o.AddPolicy("AllowAll", builder =>
@@ -47,6 +52,7 @@ namespace BloodDonationProject
             services.AddAutoMapper(typeof(MapperInitializer));
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IAuthManager, AuthManager>();
 
             services.AddSwaggerGen(c =>
             {

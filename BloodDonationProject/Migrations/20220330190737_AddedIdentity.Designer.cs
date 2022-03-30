@@ -4,14 +4,16 @@ using BloodDonationProject.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BloodDonationProject.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220330190737_AddedIdentity")]
+    partial class AddedIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -463,22 +465,6 @@ namespace BloodDonationProject.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "5e49b3c0-eff2-4147-8507-4912c38cb4de",
-                            ConcurrencyStamp = "2584f26b-54ab-4be6-8323-7523d8c2d115",
-                            Name = "user",
-                            NormalizedName = "USER"
-                        },
-                        new
-                        {
-                            Id = "f6008a39-63b9-4d4e-b314-70aeff910ce1",
-                            ConcurrencyStamp = "74212b04-d6ce-427b-8840-89a18ad09b64",
-                            Name = "admin",
-                            NormalizedName = "ADMINISTRATOR"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
