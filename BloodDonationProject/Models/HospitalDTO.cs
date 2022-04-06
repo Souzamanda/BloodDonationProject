@@ -15,6 +15,12 @@ namespace BloodDonationProject.Models
         [Required]
         public string Phone { get; set; }
     }
+
+    public class UpdateHospitalDTO : CreateHospitalDTO
+    {
+
+    }
+
     public class HospitalDTO : CreateHospitalDTO
     {
         public int Id { get; set; }

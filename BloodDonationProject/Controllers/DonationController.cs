@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BloodDonationProject.Data;
 using BloodDonationProject.IRepository;
 using BloodDonationProject.Models;
 using Microsoft.AspNetCore.Http;
@@ -43,7 +44,7 @@ namespace BloodDonationProject.Controllers
             }
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name = "GetDonation")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetDonation(int id)
@@ -57,6 +58,67 @@ namespace BloodDonationProject.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Something went wrong in the {nameof(GetDonation)}");
+                return StatusCode(500, "Internal Server Error. Please try again later.");
+            }
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateDonation([FromBody] CreateDonationDTO donationDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid POST attempt in {nameof(CreateDonation)}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var donation = _mapper.Map<Donation>(donationDTO);
+                await _unitOfWork.Donations.Insert(donation);
+                await _unitOfWork.Save();
+
+                return CreatedAtRoute("GetDonation", new { id = donation.Id }, donation);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something went wrong in the {nameof(CreateDonation)}");
+                return StatusCode(500, "Internal Server Error. Please try again later.");
+            }
+        }
+
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateDonation(int id, [FromBody] UpdateDonationDTO donationDTO)
+        {
+            if (!ModelState.IsValid || id < 1)
+            {
+                _logger.LogError($"Invalid UPDATE attempt in {nameof(UpdateDonation)}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var donation = await _unitOfWork.Donations.Get(q => q.Id == id);
+                if (donation == null)
+                {
+                    _logger.LogError($"Invalid UPDATE attempt in {nameof(UpdateDonation)}");
+                    return BadRequest("Submitted data is invalid");
+                }
+
+                _mapper.Map(donationDTO, donation);
+                _unitOfWork.Donations.Update(donation);
+                await _unitOfWork.Save();
+
+                return AcceptedAtRoute("GetDonation", new { id = donation.Id }, donation);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something went wrong in the {nameof(UpdateDonation)}");
                 return StatusCode(500, "Internal Server Error. Please try again later.");
             }
         }
