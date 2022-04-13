@@ -15,13 +15,13 @@ namespace BloodDonationProject
     {
         public static void Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.File(
-                    path: "c:\\blooddonation\\logs\\log-.txt",
-                    outputTemplate: "{Timestamp: yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exceptions}",
-                    rollingInterval: RollingInterval.Day,
-                    restrictedToMinimumLevel: LogEventLevel.Information
-                ).CreateLogger();
+            //Log.Logger = new LoggerConfiguration()
+            //    .WriteTo.File(
+            //        path: "c:\\blooddonation\\logs\\log-.txt",
+            //        outputTemplate: "{Timestamp: yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exceptions}",
+            //        rollingInterval: RollingInterval.Day,
+            //        restrictedToMinimumLevel: LogEventLevel.Information
+            //    ).CreateLogger();
             try
             {
                 Log.Information("Application Is Starting");
